@@ -1,0 +1,105 @@
+<!doctype!>
+<html class = "no-js" lang = "en">
+    <head>
+        <link rel = "stylesheet" type = "text/css" href =   "styles/main.css"/>	
+
+        <style>
+            #map{
+                width: 200px;
+                height: 150px;
+                margin-left: 50px;
+                border: 2px solid #000;
+                background-color: #fff;
+                text-align: center;
+                
+            }
+        </style>
+    </head>
+        <body>
+            
+            <h1>Map</h1>
+            <div id="map">      </div>
+            <h4>Current Location: </h4>
+            <h4>Total Miles: </h4>
+            <h4>Average Speed: </h4>
+            <br>
+            <button type="button">Start</button>
+            <button type="button">End</button>
+            <br>
+            <br>
+            <a href="lety.html"><button type="button">Click Me!</button></a>
+            <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC3DSLVUuvkMObCJDFqgi8XwxnDIa6JWGA"></script>
+
+    <script>
+// Note: This example requires that you consent to location sharing when
+// prompted by your browser. If you see a blank space instead of the map, this
+// is probably because you have denied permission for location sharing.
+var pos;
+var map;
+
+function initialize() {
+  var mapOptions = {
+    enableHighAccuracy:true,
+    zoom: 17,
+    timeout:Infinity,
+    maximumAge:0,
+    disableDefaultUI: true
+  };
+  map = new google.maps.Map(document.getElementById('map'),
+      mapOptions);
+
+  // Try HTML5 geolocation
+  if(navigator.geolocation) {
+    navigator.geolocation.watchPosition(function(position) {
+      pos = new google.maps.LatLng(position.coords.latitude,
+                                       position.coords.longitude);
+
+      var infowindow = new google.maps.InfoWindow({
+        map: map,
+        position: pos
+      });
+
+      map.setCenter(pos);
+      addMarker();  
+      
+    }, function() {
+      handleNoGeolocation(true);
+    });
+  } else {
+    // Browser doesn't support Geolocation
+    handleNoGeolocation(false);
+  }
+}
+
+function handleNoGeolocation(errorFlag) {
+  if (errorFlag) {
+    var content = 'Error: The Geolocation service failed.';
+  } else {
+    var content = 'Error: Your browser doesn\'t support geolocation.';
+  }
+
+  var options = {
+    map: map,
+    position: new google.maps.LatLng(position.coords.latitude,
+                                       position.coords.longitude),
+    content: content
+  };
+
+  var infowindow = new google.maps.InfoWindow(options);
+  map.setCenter(options.position);
+}
+
+function addMarker() {
+  var marker = new google.maps.Marker({
+    position: pos,
+    map: map,
+      icon: 'styles/img/cycling.png'
+  });
+}
+
+google.maps.event.addDomListener(window, 'load', initialize);
+
+    </script>
+        </body>
+    
+</html>
